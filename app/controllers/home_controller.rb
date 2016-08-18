@@ -7,9 +7,9 @@ class HomeController < ApplicationController
   end
   
   def write
-    post = Post.new(title: params[:title], content: params[:content])
+    post = Post.new(title: params[:title], content: params[:content], user: current_user)
     post.save
-    
+    authorize! :write, Post
     redirect_to "/home/index"
     
   end
@@ -17,12 +17,15 @@ class HomeController < ApplicationController
 
   def update
     @one_post = Post.find(params[:id])
+    authorize! :updatee, @one_post
   end
   
   def destroy
     @one_post = Post.find(params[:id])
+    authorize! :destroy, @one_post
     @one_post.destroy
     redirect_to '/home/index'
+    
 
   end
   
